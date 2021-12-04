@@ -1,14 +1,54 @@
-lines = [199,200,208,210,200,207,240,269,260,263]
+INPUT = "./day_01/input"
+SMALL_INPUT = "./day_01/small_input"
 
+class Window
 
-prev = nil
-acc = 0
+  attr_writer :on_full
+  attr_reader :values
+  @@max_length = 3
 
-lines.each do |l|
-  if prev and l > prev
-    acc += 1
+  def initialize
+    @on_full = nil
+    @values = []
   end
-  prev = l
+
+  def add(value)
+    @values << value
+
+    if full?
+      @on_full.call
+    end
+  end
+
+  def full?
+    @values.length >= @@max_length
+  end
+
 end
 
-puts acc
+windows = []
+$acc = 0
+
+
+def run_window_comparison(curr, prev)
+  if prev && curr.values.inject(:+) > prev.values.inject(:+)
+    $acc += 1
+    puts "On #{curr.values.inject(:+)}"
+  end
+end
+
+File.open(INPUT, "r") do |f|
+  f.each_line do |line|
+    prev_2 = windows[-2]
+    prev_1 = windows[-1]
+
+    current = Window.new
+    current.on_full = lambda { run_window_comparison(current, prev_1) }
+
+    [prev_2, prev_1, current].each { |window| window.add(Integer(line)) if window }
+
+    windows << current
+  end
+end
+
+puts $acc
