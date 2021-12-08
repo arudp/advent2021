@@ -19,6 +19,9 @@ GEM
     racc (1.6.0)
     rainbow (3.0.0)
     rake (13.0.6)
+    readapt (1.4.3)
+      backport (~> 1.2)
+      thor (~> 1.0)
     regexp_parser (2.1.1)
     reverse_markdown (2.1.1)
       nokogiri
@@ -63,6 +66,7 @@ PLATFORMS
   x86_64-darwin-21
 
 DEPENDENCIES
+  readapt
   ruby-debug-ide
   solargraph
 
